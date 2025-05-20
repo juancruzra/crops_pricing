@@ -9,7 +9,7 @@
   <ul id="lista-precios"></ul>
 
   <script>
-    fetch('https://scraper-bcr.onrender.com/precios') // <-- tu URL de Render
+    fetch("https://precios-bcr-backend.onrender.com/precios")
       .then(response => response.json())
       .then(data => {
         const lista = document.getElementById('lista-precios');
@@ -18,6 +18,10 @@
           li.textContent = `${item.producto}: ${item.precio}`;
           lista.appendChild(li);
         });
+      })
+      .catch(error => {
+        document.getElementById('lista-precios').innerHTML = '<li>Error al obtener precios</li>';
+        console.error(error);
       });
   </script>
 </body>
