@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Precios de granos - BCR</title>
 </head>
 <body>
@@ -9,19 +9,34 @@
   <ul id="lista-precios"></ul>
 
   <script>
-    fetch("https://precios-bcr-backend.onrender.com/precios")
-      .then(response => response.json())
+    // REEMPLAZAR esta URL por la de tu backend en Render
+    const API_URL = "https://TU-backend.onrender.com/precios";
+
+    fetch(API_URL)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Error en la respuesta del servidor");
+        }
+        return response.json();
+      })
       .then(data => {
-        const lista = document.getElementById('lista-precios');
-        data.precios.forEach(item => {
-          const li = document.createElement('li');
-          li.textContent = `${item.producto}: ${item.precio}`;
-          lista.appendChild(li);
-        });
+        const lista = document.getElementById("lista-precios");
+        lista.innerHTML = ""; // Limpiar por si ya hay algo
+
+        if (data.precios && data.precios.length > 0) {
+          data.precios.forEach(item => {
+            const li = document.createElement("li");
+            li.textContent = `${item.producto}: ${item.precio}`;
+            lista.appendChild(li);
+          });
+        } else {
+          lista.innerHTML = "<li>No se encontraron precios</li>";
+        }
       })
       .catch(error => {
-        document.getElementById('lista-precios').innerHTML = '<li>Error al obtener precios</li>';
-        console.error(error);
+        console.error("Error al cargar los precios:", error);
+        document.getElementById("lista-precios").innerHTML =
+          "<li>Error al cargar los precios</li>";
       });
   </script>
 </body>
